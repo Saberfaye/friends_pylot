@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Friends</title>
+		<meta charset="utf-8">
+		<meta name="discription" content="Friends Demo Webpage for Practice.">
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+		<link rel="stylesheet" type="text/css" href="/static/css/friends/index.css">
+	</head>
+	<body>
+		<div id="wrapper">
+			<nav class="navbar navbar-inverse">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<a class="navbar-brand">Hello, {{ session["alias"] }}</a>
+					</div>
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="/users/logout">Logout</a></li>
+					</ul>
+				</div>
+			</nav>
+			<div class="well">
+				<h2>Here is the list of your friends:</h2>
+				{% if all_friends: %}
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>Alias</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for friend in all_friends: %}
+						<tr>
+							<td>{{friend["alias"]}}</td>
+							<td><a href="/users/{{friend['id']}}" class="btn btn-info">View Profile</a><a href="/friends/delete/{{friend['id']}}" class="btn btn-info">Remove as Friend</a></td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				{% endif %}
+				{% if not all_friends: %}
+				<p>You don't have friends yet.</p>
+				{% endif %}
+			</div>
+			<div class="well">
+				<h2>Other Users not on your friend's list:</h2>
+				{% if all_not_friends: %}
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>Alias</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for friend in all_not_friends %}
+						<tr>
+						<tr>
+							<td><a href="/users/{{friend['id']}}">{{friend["alias"]}}</a></td>
+							<td><a href="/friends/add/{{friend['id']}}" class="btn btn-info">Add as Friend</a></td>
+						</tr>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				{% endif %}
+				{% if not all_not_friends: %}
+				<p>All users are friends with you!</p>
+				{% endif %}
+			</div>
+		</div>
+	</body>
+</html>
